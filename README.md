@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This library was written as the primary dependency for freboard-learning applications.  `fretology-engine` fulfills two objectives: generation of custom
+This library was written as a primary dependency for freboard-learning applications.  `fretology-engine` fulfills two objectives: generation of custom
 arrangement of fretboard notes and note selection from the built dataset.
 Datasets can consist of of whole, flat/sharp, or both types of notes and be limited
 to specific strings and frets.  The library uses standard guitar tuning (E-A-D-G-B-E)
