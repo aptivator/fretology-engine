@@ -1,4 +1,4 @@
-const ACode = 'A'.charCodeAt(0);
+import {ACode} from './configs';
 
 export function getNextNote(note) {
   if(note.length === 2 || 'BE'.includes(note)) {
