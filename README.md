@@ -7,8 +7,7 @@ arrangement of fretboard notes and note selection from the built dataset.
 Datasets can consist of of whole, flat/sharp, or both types of notes and be limited
 to specific strings and frets.  The library uses standard guitar tuning (E-A-D-G-B-E)
 by default and can use any custom tuning.  Notes by default are grouped by strings
-and can also be grouped by frets.  The latter arrangement allows for note selection
-from a specific fret rather than a string.
+and can also be grouped by frets.
 
 Note picking from a dataset can be purely random or progress on a string-by-string
 or fret-by-fret basis.  For the latter modes, a string or a fret is picked and notes
