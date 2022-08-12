@@ -25,11 +25,8 @@ export default {
       baseContents(packageJson) {
         let fields = ['name', 'version', 'description', 'dependencies', 'peerDependencies'];
         let _package = pick(packageJson, fields);
-
-        return Object.assign(_package, {
-          main: main.replace('dist/', ''),
-          module: module.replace('dist/', '')
-        });
+        [main, module] = [main, module].map((type) => type.replace('dist/', ''));
+        return Object.assign(_package, {main, module});
       }
     })
   ]
