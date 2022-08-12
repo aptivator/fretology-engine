@@ -1,7 +1,6 @@
 import chai, {expect}                               from 'chai';
 import deepEqualInAnyOrder                          from 'deep-equal-in-any-order';
 import {fretNumbers, stringNumbers, standardTuning} from '../src/_lib/configs';
-import {cloneDeep}                                  from '../src/_lib/utils';
 import {sharpifyNote}                               from '../src/data-generator/_lib/data-generator-utils';
 import {assignNotesAndDefaults}                     from '../src';
 
@@ -9,9 +8,8 @@ chai.use(deepEqualInAnyOrder);
 
 describe('Data Generator', () => {
   let configs;
-  let baseConfigs = {progression: 'string', whole: true, sharp: true};
 
-  beforeEach(() => configs = cloneDeep(baseConfigs));
+  beforeEach(() => configs = {progression: 'string', whole: true, sharp: true});
   
   describe('Building Notes Dataset', () => {
     it('makes two equal datasets: notes and notesNotUsed', () => {
