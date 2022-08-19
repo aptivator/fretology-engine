@@ -1,9 +1,15 @@
+import {libraryName} from './configs';
+
 export function ascNumberSorter(n1, n2) {
   return n1 - n2;
 }
 
 export function cloneDeep(o) {
   return JSON.parse(JSON.stringify(o));
+}
+
+export function error(errorMessage) {
+  throw new Error(`${libraryName}: ${errorMessage}`);
 }
 
 export function isEmpty(o) {
@@ -36,4 +42,14 @@ export function pickValue(values, pickType) {
   }
 
   return values[0];
+}
+
+export function setObjectValue(o, path, value) {
+  let last = path.pop();
+
+  for(let part of path) {
+    o = o[part] ??= {};
+  }
+  
+  o[last] = value;
 }

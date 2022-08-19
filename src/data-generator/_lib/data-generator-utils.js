@@ -1,4 +1,4 @@
-import {ACode} from './configs';
+const ACode = 'A'.charCodeAt(0);
 
 export function getNextNote(note) {
   if(note.length === 2 || 'BE'.includes(note)) {
@@ -12,6 +12,10 @@ function getNextNoteLetter(letter, next = true) {
   let step = next ? 1 : -1;
   let nextCode = ACode + (letter.charCodeAt(0) - ACode + step) % 7;
   return String.fromCharCode(nextCode);  
+}
+
+export function getSequentialArray(length) {
+  return Array.from({length}, (v, i) => `${i}`);
 }
 
 export function sharpifyNote(note) {

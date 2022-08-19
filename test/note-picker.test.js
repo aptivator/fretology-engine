@@ -1,9 +1,13 @@
 import {expect}                           from 'chai';
 import sinon                              from 'sinon';
-import {stringNumbers, fretNumbers}       from '../src/_lib/configs';
+import {getSequentialArray}               from '../src/data-generator/_lib/data-generator-utils';
+import {MAX_FRETS, standardTuning}        from '../src/_lib/configs';
 import {assignNotesAndDefaults, pickNote} from '../src';
 
 describe('Note Picker', () => {
+  let stringNumbers = getSequentialArray(standardTuning.length);
+  let fretNumbers = getSequentialArray(MAX_FRETS);
+  
   describe('Default Behaviors', () => {
     let configs;
     let stringToUse = '0';

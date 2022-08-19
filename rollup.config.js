@@ -1,19 +1,15 @@
 import pick                from 'lodash.pick';
 import babel               from '@rollup/plugin-babel';
-import generatePackageJson from 'rollup-plugin-generate-package-json'
+import generatePackageJson from 'rollup-plugin-generate-package-json';
 
 let {main, module, name} = require('./package.json');
 
 export default {
   input: 'src/index.js',
-  external: ['lodash.setwith'],
   output: [{
     format: 'umd',
     file: main,
-    name,
-    globals: {
-      'lodash.setwith': 'setWith'
-    }
+    name
   }, {
     format: 'es',
     file: module,

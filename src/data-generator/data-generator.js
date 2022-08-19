@@ -1,36 +1,71 @@
-import setWith                                      from 'lodash.setwith';
-import {fretNumbers, stringNumbers, standardTuning} from '../_lib/configs';
-import {ascNumberSorter, cloneDeep, pickValue}      from '../_lib/utils';
-import {getNextNote, sharpifyNote}                  from './_lib/data-generator-utils';
+import {MAX_FRETS, standardTuning}                                    from '../_lib/configs';
+import {ascNumberSorter, cloneDeep, error, pickValue, setObjectValue} from '../_lib/utils';
+import {getNextNote, getSequentialArray, sharpifyNote}                from './_lib/data-generator-utils';
 
-export function assignNotesAndDefaults(configs) {
-  addNotesDataset(configs);
+export function assignNotesAndDefaults(configs = {}) {
+  let notes = generateNotesDataset(configs);
+  Object.assign(configs, {notes, notesNotUsed: cloneDeep(notes)});
   setStringAndFretToUse(configs);
+  return configs;
 }
 
-function addNotesDataset(configs) {
-  let {tuning = standardTuning, progression} = configs;
-  let {strings = stringNumbers, frets = fretNumbers} = configs;
-  let {whole, sharp} = configs;
+export function generateNotesDataset(configs) {
+  let {tuning, progression} = configs;
+  let {strings, frets, maxFrets = MAX_FRETS} = configs;
+  let {whole = true, sharp = true} = configs;
   let pather = progression === 'fret' ? (p1, p2) => [p2, p1] : (...args) => args;
+  let usingAllFrets = true;
   let notes = {};
 
-  frets = frets.reduce((frets, fret, index) => {
-    frets[fret] = index;
-    return frets;
-  }, {});
-    
+  if(!progression) {
+    configs.progression = 'random';
+  }
+
+  if(!tuning) {
+    tuning = standardTuning;
+  } else {
+    tuning = tuning.map((note) => note.toUpperCase());
+  }
+
+  if(!strings) {
+    strings = Object.keys(tuning);
+  }
+
+  if(strings.length > tuning.length) {
+    error('number of specified strings exceeds number of strings in a tuning');
+  }
+
+  if(frets) {
+    frets.sort(ascNumberSorter);
+    maxFrets = +frets[frets.length - 1] + 1;
+  }
+
+  let fretNumbers = getSequentialArray(maxFrets);
+
+  if(!frets) {
+    frets = fretNumbers;
+  }
+
+  if(frets.length !== fretNumbers.length) {
+    usingAllFrets = false;
+
+    frets = frets.reduce((frets, fret, index) => {
+      frets[fret] = index;
+      return frets;
+    }, {});
+  }
+
   for(let string of strings) {
     let note = tuning[string];
     note = sharpifyNote(note);
     
     for(let fret of fretNumbers) {
-      if(frets.hasOwnProperty(fret)) {
+      if(usingAllFrets || frets.hasOwnProperty(fret)) {
         let isWhole = note.length === 1;
 
         if((whole && isWhole) || (sharp && !isWhole)) {
           let path = pather(string, fret);
-          setWith(notes, path, note, Object);
+          setObjectValue(notes, path, note);
         }
       }
 
@@ -38,7 +73,7 @@ function addNotesDataset(configs) {
     }
   }
 
-  Object.assign(configs, {notes, notesNotUsed: cloneDeep(notes)});
+  return notes;
 }
 
 function setStringAndFretToUse(configs) {
