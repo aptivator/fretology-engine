@@ -10,7 +10,7 @@ frets.  The library uses standard guitar tuning (E-A-D-G-B-E) by default and can
 any custom tuning.  Notes by default are grouped by strings and can also be grouped 
 by frets.  Note picking from a dataset can be purely random or progress on a 
 string-by-string or fret-by-fret basis.  For the latter modes, a string or a fret is 
-picked and notes within are selected exhaustively, before selection moves to a next 
+picked and notes within are selected exhaustively, before selection moves to the next 
 string or fret.  When using the string or fret progression, strings or frets can be 
 chosen randomly or sequentially (acendingly or descendingly).  Notes within a string
 or a fret can also be chosen randomly or sequentially.  Starting strings or frets
@@ -111,8 +111,7 @@ let notes = generateNotesDataset(configs);
   following output:
 
   {
-    0: 'C', 1: 'C#', 2: 'D', 3: 'D#',  4: 'E',  5: 'F', 6: 'F#',
-    7: 'G', 8: 'G#', 9: 'A', 10:'A#', 11: 'B', 12: 'C'
+    0: 'C', 1: 'C#', 2: 'D', 3: 'D#', 4: 'E', 5: 'F', 6: 'F#', 7: 'G', 8: 'G#', 9: 'A', 10:'A#', 11: 'B', 12: 'C'
   }
 */
 ```
