@@ -26,13 +26,13 @@ npm install --save fretology-engine
 
 ### Notes Generation
 
-The library exports `assignNotesAndDefaults` function.  The method accepts a configuration
-object that directs a type of dataset to build.  The generated notes are added to a
-configuration object as `notes` and `notesNotUsed`.  The latter is employed to determine
-which notes can be picked during a selection.  Once a note is picked, it is removed from
-`notesNotUsed`.  When `notesNotUsed` is empty, it is "refilled" with `notes`.  `notes`,
-parallel with `notesNotUsed`, is drawn upon during sequential selection to determine the
-next string and/or fret to pick.
+The library exports `assignNotesAndDefaults` function.  The method accepts a
+configuration object that directs a type of dataset to build.  The generated notes
+are added to a configuration object as `notes` and `notesNotUsed`.  The latter is
+employed to determine which notes can be picked during a selection.  Once a note is
+picked, it is removed from `notesNotUsed`.  When `notesNotUsed` is empty, it is
+"refilled" with `notes`.  `notes`, parallel with `notesNotUsed`, is drawn upon during
+sequential selection to determine the next string and/or fret to pick.
 
 How a note dataset is built is affected by the following configuration properties:
 
@@ -52,26 +52,29 @@ How a note dataset is built is affected by the following configuration propertie
   * default: `true`
 * **`strings`**
   * contains string numbers to include in a dataset
-  * possible values: any string numbers from the highest (i.e., `0`) to the lowest pitched
-    (depending on the instrument)
-  * default: [`'0'`, `'1'`, `'2'`, `'3'`, `'4'`, `'5'`] (string numbers for a standard guitar tuning)
+  * possible values: any string numbers from the highest (i.e., `0`) to the lowest
+    pitched (depending on the instrument)
+  * default: `['0', '1', '2', '3', '4', '5']` (string numbers for a 
+    standard guitar tuning)
 * **`frets`**
   * includes fret numbers to contain in a dataset
-  * possible values: any fret numbers from the lowest (i.e., `0` [open string]) to whatever the highest
-    fret that is desired
-  * example: [`'1'`, `'2'`, `'3'`, `'4'`, `'5'`, `'13'`, `'14'`, `'15'`, `'16'`, `'17'`, `'18'`]
+  * possible values: any fret numbers from the lowest (i.e., `0` [open string]) to
+    whatever the highest fret that is desired
+  * example: `['1', '2', '3', '13', '14', '15']`
 * **`maxFrets`**
   * sets a maximum number of frets to use
-  * **Note**: the number must include fret `0` (open strings).  For a 21-fret arrangement, `maxFrets`
-    setting would need to be `22`
-  * **Note**: `maxFrets` is ignored when `frets` setting is provided
+  * NOTE: the number must include fret `0` (open strings).  For a 21-fret arrangement,
+    `maxFrets` should be `22`
+  * NOTE: `maxFrets` is ignored when `frets` setting is provided
   * default: `25`
 * **`tuning`**
   * defines base notes from which a dataset is built
-  * **Note**: the **first** value in a `tuning` array should correspond to a **highest pitched** string
-  * **Note**: if a number of `strings` setting exceeds a number of strings in a `tuning`, the library
-    will error out
-  * default: [`'E'`, `'B'`, `'G'`, `'D'`, `'A'`, `'E'`] (highest pitched string is first)
+  * NOTE: the first value in a `tuning` array should correspond to a highest-pitched
+    string
+  * NOTE: if a number of `strings` setting exceeds a number of strings in a `tuning`,
+    the library will error out
+  * default: `['E', 'B', 'G', 'D', 'A', 'E']` (highest pitched string is 
+    first)
     
 #### Example: Generating Default Dataset
 
@@ -90,7 +93,8 @@ let configs = assignNotesAndDefaults();
 
 #### Example: 12-Fret Ukulele Dataset
 
-`fretology-engine` also exports `generateNotesDataset` function that accepts a configuration object and returns just the `notes` dataset.
+`fretology-engine` also exports `generateNotesDataset` function that accepts a
+configuration object and returns just the `notes` dataset.
 
 ```javascript
 import {generateNotesDataset} from 'fretology-engine';
@@ -107,26 +111,21 @@ let notes = generateNotesDataset(configs);
   following output:
 
   {
-    0: 'C',
-    1: 'C#',  
-    2: 'D', 
-    3: 'D#', 
-    4: 'E',
-    5: 'F', 
-    6: 'F#', 
-    7: 'G',
-    8: 'G#', 
-    9: 'A', 
-    10:'A#', 
-    11: 'B', 
-    12: 'C'
+    0: 'C', 1: 'C#', 2: 'D', 3: 'D#',  4: 'E',  5: 'F', 6: 'F#',
+    7: 'G', 8: 'G#', 9: 'A', 10:'A#', 11: 'B', 12: 'C'
   }
 */
 ```
 
-### Setting Defaults
+### Setting Starting String and Fret
+
+When `string` or `fret` progression is used, it is possible to set 
 
 ### Note Picking
+
+#### Random Selection
+
+#### Sequential Selection
 
 ```javascript
 import {assignNotesAndDefaults, pickFret} from 'fretology-engine';

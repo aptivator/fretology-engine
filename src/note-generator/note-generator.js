@@ -1,15 +1,8 @@
-import {MAX_FRETS, standardTuning}                                    from '../_lib/configs';
-import {ascNumberSorter, cloneDeep, error, pickValue, setObjectValue} from '../_lib/utils';
-import {getNextNote, getSequentialArray, sharpifyNote}                from './_lib/data-generator-utils';
+import {MAX_FRETS, standardTuning}                     from '../_lib/configs';
+import {ascNumberSorter, error, setObjectValue}        from '../_lib/utils';
+import {getNextNote, getSequentialArray, sharpifyNote} from './_lib/note-generator-utils';
 
-export function assignNotesAndDefaults(configs = {}) {
-  let notes = generateNotesDataset(configs);
-  Object.assign(configs, {notes, notesNotUsed: cloneDeep(notes)});
-  setStringAndFretToUse(configs);
-  return configs;
-}
-
-export function generateNotesDataset(configs) {
+export function generateNotesDataset(configs = {}) {
   let {tuning, progression} = configs;
   let {strings, frets, maxFrets = MAX_FRETS} = configs;
   let {whole = true, sharp = true} = configs;
@@ -74,23 +67,4 @@ export function generateNotesDataset(configs) {
   }
 
   return notes;
-}
-
-function setStringAndFretToUse(configs) {
-  let {progression} = configs;
-  
-  if(progression !== 'random') {
-    let {notes} = configs;
-    let settings = [['startingString', 'string']];
-    let fretMethod = progression === 'fret' ? 'unshift' : 'push';
-    settings[fretMethod](['startingFret', 'fret']);
-    
-    for(let [startingProp, toUseProp] of settings) {
-      let {[startingProp]: pickType = 'random'} = configs;
-      let availables = Object.keys(notes).sort(ascNumberSorter);
-      let fretOrStringSelection = pickValue(availables, pickType);
-      configs[toUseProp] = fretOrStringSelection;
-      notes = notes[fretOrStringSelection];
-    }
-  }
 }

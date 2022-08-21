@@ -1,20 +1,16 @@
-import {expect}                           from 'chai';
-import sinon                              from 'sinon';
-import {getSequentialArray}               from '../src/data-generator/_lib/data-generator-utils';
-import {MAX_FRETS, standardTuning}        from '../src/_lib/configs';
-import {assignNotesAndDefaults, pickNote} from '../src';
+import {expect}                                 from 'chai';
+import sinon                                    from 'sinon';
+import {assignNotesAndStartingValues, pickNote} from '../src';
+import {stringNumbers, fretNumbers}             from './fixtures/configs';
 
 describe('Note Picker', () => {
-  let stringNumbers = getSequentialArray(standardTuning.length);
-  let fretNumbers = getSequentialArray(MAX_FRETS);
-  
   describe('Default Behaviors', () => {
     let configs;
     let stringToUse = '0';
 
     beforeEach(() => {
       configs = {progression: 'random', strings: [stringToUse], sharp: true, whole: true};
-      assignNotesAndDefaults(configs);
+      assignNotesAndStartingValues(configs);
     })
 
     it('returns string, fret, and note object', () => {
@@ -42,7 +38,7 @@ describe('Note Picker', () => {
       let strings = ['0', '1'];
       let frets = fretNumbers.slice(12);
       let configs = {progression: 'random', sharp: true, whole: true, strings, frets};
-      assignNotesAndDefaults(configs);
+      assignNotesAndStartingValues(configs);
       strings.forEach(() => frets.forEach(() => pickNote(configs)));
       expect(spy.callCount).to.equal(strings.length * frets.length * 2);
       spy.restore();
@@ -68,7 +64,7 @@ describe('Note Picker', () => {
       conditions.forEach(({primary, secondary, primaries, startingProperty, configs}) => {
         it(`assigns a random ${primary} whose ${secondary}s are to be fully used before moving to a next ${primary}`, () => {
           let uniques = new Set();
-          assignNotesAndDefaults(configs);
+          assignNotesAndStartingValues(configs);
     
           Object.values(configs.notes).forEach((notes) => {
             Object.values(notes).forEach(() => {
@@ -84,7 +80,7 @@ describe('Note Picker', () => {
         it(`uses assigned starting ${primary} and then picks a ${primary} randomly`, () => {
           let uniques = new Set();
           configs[startingProperty] = 'highest';
-          assignNotesAndDefaults(configs);
+          assignNotesAndStartingValues(configs);
   
           Object.values(configs.notes).forEach((notes) => {
             Object.values(notes).forEach(() => {
@@ -130,7 +126,7 @@ describe('Note Picker', () => {
             frets.reverse();
           }
 
-          assignNotesAndDefaults(configs);
+          assignNotesAndStartingValues(configs);
 
           Object.values(configs.notes).forEach((notes) => {
             Object.values(notes).forEach(() => {
