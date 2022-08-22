@@ -217,7 +217,7 @@ following configurations:
   * possible values: `random`, `1`, or `-1`
   * default: `random`
   * `random`, `1`, and `-1` settings would have the same effect as
-    describe above
+    described above
 
 **Example: Purely Sequential Selection**
 
@@ -304,7 +304,7 @@ selection is returned by `pickNote` method, it will as a sharp.  If
 note normalization is required, `fretology-engine` exports
 `normalizeNote` method.  It will convert a flat into a sharp.  A C-
 or F-flat will be converted to a B or E, respectively.  A B-sharp or
-E-sharp will be normalized to a respectively C or F.  By default,
+E-sharp will be normalized to a respective C or F.  By default,
 `normalizeNote` will capitalize a note.  An accidental note that does
 not include a pound sign (`#`) as the second character will be treated
 as a flat.
