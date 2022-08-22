@@ -276,7 +276,7 @@ let configs = {
   frets: [0, 1, 2],
   strings: [0, 1, 2],
   startingString: 'lowest', 
-  startingFret, 'lowest',
+  startingFret: 'lowest',
   stringProgression: 'random',
   fretProgression: 'random'
 };
