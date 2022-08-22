@@ -286,11 +286,9 @@ assignNotesAndStartingValues(configs);
 let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note is 'E'
 ({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
 ({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
-
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
-
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
