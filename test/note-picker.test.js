@@ -9,7 +9,7 @@ describe('Note Picker', () => {
     let stringToUse = '0';
 
     beforeEach(() => {
-      configs = {progression: 'random', strings: [stringToUse], sharp: true, whole: true};
+      configs = {progression: 'random', strings: [stringToUse], accidental: true, natural: true};
       assignNotesAndStartingValues(configs);
     })
 
@@ -37,7 +37,7 @@ describe('Note Picker', () => {
       let spy = sinon.spy(Math, 'random');
       let strings = ['0', '1'];
       let frets = fretNumbers.slice(12);
-      let configs = {progression: 'random', sharp: true, whole: true, strings, frets};
+      let configs = {progression: 'random', accidental: true, natural: true, strings, frets};
       assignNotesAndStartingValues(configs);
       strings.forEach(() => frets.forEach(() => pickNote(configs)));
       expect(spy.callCount).to.equal(strings.length * frets.length * 2);
@@ -52,13 +52,13 @@ describe('Note Picker', () => {
         secondary: 'fret',
         primaries: stringNumbers,
         startingProperty: 'startingString',
-        configs: {progression: 'string', stringProgression: 'random', whole: true}
+        configs: {progression: 'string', stringProgression: 'random', natural: true}
       }, {
         primary: 'fret',
         secondary: 'string',
         primaries: fretNumbers,
         startingProperty: 'startingFret',
-        configs: {progression: 'fret', fretProgression: 'random', whole: true, sharp: true}
+        configs: {progression: 'fret', fretProgression: 'random', natural: true, accidental: true}
       }];
 
       conditions.forEach(({primary, secondary, primaries, startingProperty, configs}) => {
@@ -117,8 +117,8 @@ describe('Note Picker', () => {
             stringProgression: individualProgression,
             startingFret: startingPoint,
             fretProgression: individualProgression,
-            sharp: true,
-            whole: true
+            accidental: true,
+            natural: true
           };
 
           if(!asc) {

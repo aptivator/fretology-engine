@@ -5,7 +5,7 @@ import {getNextNote, getSequentialArray, sharpifyNote} from './_lib/note-generat
 export function generateNotesDataset(configs = {}) {
   let {tuning, progression} = configs;
   let {strings, frets, maxFrets = MAX_FRETS} = configs;
-  let {whole = true, sharp = true} = configs;
+  let {natural = true, accidental = true} = configs;
   let pather = progression === 'fret' ? (p1, p2) => [p2, p1] : (...args) => args;
   let usingAllFrets = true;
   let notes = {};
@@ -54,9 +54,9 @@ export function generateNotesDataset(configs = {}) {
     
     for(let fret of fretNumbers) {
       if(usingAllFrets || frets.hasOwnProperty(fret)) {
-        let isWhole = note.length === 1;
+        let isNatural = note.length === 1;
 
-        if((whole && isWhole) || (sharp && !isWhole)) {
+        if((natural && isNatural) || (accidental && !isNatural)) {
           let path = pather(string, fret);
           setObjectValue(notes, path, note);
         }

@@ -5,7 +5,7 @@
 This library was written as a primary dependency for freboard-learning applications.
 `fretology-engine` fulfills two objectives: (1) generation of custom arrangement of 
 fretboard notes and (2) note selection from the built dataset.  Datasets can consist
-of whole, flat/sharp, or both types of notes and be limited to specific strings and 
+of natural, accidental, or both types of notes and be limited to specific strings and 
 frets.  The library uses standard guitar tuning (E-A-D-G-B-E) by default and can use 
 any custom tuning.  Notes by default are grouped by strings and can also be grouped 
 by frets.  Note picking from a dataset can be purely random or progress on a 
@@ -42,11 +42,11 @@ How a note dataset is built is affected by the following configuration propertie
   * default: `random`
   * NOTE: `random` and `string` instruct to group notes by strings
   * NOTE: `fret` setting directs grouping of notes by frets
-* **`whole`**
-  * indicates whether to include whole notes
+* **`natural`**
+  * indicates whether to include natural notes
   * possible values: `true` or `false`
   * default: `true`
-* **`sharp`**
+* **`accidental`**
   * specifies whether to include flat/sharp notes
   * possible values: `true` or `false`
   * default: `true`
@@ -84,10 +84,10 @@ import {assignNotesAndStartingValues} from 'fretology-engine';
 let configs = assignNotesAndStartingValues();
 /* 
  * configs now includes notes and notesNotUsed
- * datasets with whole and sharp notes based on
- * the standard guitar tuning for 24 frets and
- * grouped by strings from highest- to 
- * lowested-pitched
+ * datasets with natural and accidental notes
+ * based on the standard guitar tuning for 24 
+ * frets and grouped by strings from highest- 
+ * to lowested-pitched
  */
 ```
 
@@ -107,23 +107,21 @@ let configs = {
 
 let notes = generateNotesDataset(configs);
 /*
-  printing notes['2'] (for C-string) should provide the
-  following output:
+  printing notes['2'] (for C-string) should provide the following output:
 
   {
-    0: 'C', 1: 'C#', 2: 'D',  3: 'D#',  4: 'E',  5: 'F', 6: 'F#', 
-    7: 'G', 8: 'G#', 9: 'A', 10: 'A#', 11: 'B', 12: 'C'
+    0: 'C', 1: 'C#', 2: 'D', 3: 'D#', 4: 'E', 5: 'F', 6: 'F#', 7: 'G', 8: 'G#', 9: 'A', 10: 'A#', 11: 'B', 12: 'C'
   }
 */
 ```
 
-### Setting Starting String and Fret
+### Setting Starting String and/or Fret
 
 When `string` or `fret` progression is used, it is possible to select from
 which string and/or fret note selection would start.
 
 Starting string and/or fret selection is affected by these configuration
-properties.  
+properties.
 
 * **`startingString`**
   * sets from which string to start note selection
@@ -172,23 +170,6 @@ console.log(configs.fret);   //should be '12' (midpoint of 25 [include open stri
 #### Random Selection
 
 #### Sequential Selection
-
-```javascript
-import {assignNotesAndStartingValues, pickFret} from 'fretology-engine';
-
-let configs = {
-  progression: 'fret',
-  startingFret: 'random',
-  fretProgression: 'random',
-  startingString: 'random',
-  stringProgression: -1,
-  strings: [0, 1],
-  frets: Array.from({length: 23}, (v, i) => i).slice(1),
-  tuning: ['Bb', 'A', 'Gb', 'D', 'A', 'Bb'],
-  whole: true,
-  sharp: true
-};
-```
 
 ## Caveats
 

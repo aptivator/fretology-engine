@@ -63,8 +63,8 @@ describe('Generating Notes Dataset', () => {
       expect(Object.keys(configs.notes)).to.eql(configs.frets);
     });    
 
-    it('outputs a note dataset consisting only of wholes', () => {
-      configs.sharp = false;
+    it('outputs a note dataset consisting only of natural notes', () => {
+      configs.accidental = false;
       assignNotesAndStartingValues(configs);
       Object.values(configs.notes).forEach((stringNotes) => {
         Object.values(stringNotes).forEach((note) => {
@@ -73,8 +73,8 @@ describe('Generating Notes Dataset', () => {
       });
     });
 
-    it('selects only sharp notes for a generated note dataset', () => {
-      configs.whole = false;
+    it('selects only accidental notes for a generated note dataset', () => {
+      configs.natural = false;
       assignNotesAndStartingValues(configs);
       Object.values(configs.notes).forEach((stringNotes) => {
         Object.values(stringNotes).forEach((note) => {
