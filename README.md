@@ -1,5 +1,25 @@
 # fretology-engine
 
+## Table of Contents
+
+* [Introduction](#introduction)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Notes Generation](#notes-generation)
+    * [Example: Generating Default Dataset](#example-generating-default-dataset)
+    * [Example: 12-Fret Ukulele Dataset](#example-12-fret-ukulele-dataset)
+  * [Setting Starting String and Fret](#setting-starting-string-and-fret)
+    * [Example: Configuring Starting String and Fret](#example-configuring-starting-string-and-fret)
+  * [Note Selection](#note-selection)
+    * [Purely Random Selection](#purely-random-selection)
+    * [Not Purely Random Selection](#not-purely-random-selection)
+      * [Example: Purely Sequential Selection](#example-purely-sequential-selection)
+      * [Example: Sequential and Random Selection](#example-sequential-and-random-selection)
+      * [Example: Random Fret and String Selection](#example-random-fret-and-string-selection)
+* [Caveats](#caveats)
+* [Future Features](#future-features)
+* [Contributing](#contributing)
+
 ## Introduction
 
 This library was written as a primary dependency for fretboard-learning applications.
@@ -115,7 +135,7 @@ let notes = generateNotesDataset(configs);
 */
 ```
 
-### Setting Starting String and/or Fret
+### Setting Starting String and Fret
 
 When `string` or `fret` progression is used, it is possible to select from
 which string and/or fret note selection would start.
@@ -149,7 +169,7 @@ After configurations are processed by `assignNotesAndStartingValues` function,
 starting `string` and `fret` are written to the configuration object to be
 subsequently used by the note-picking method that `fretology-engine` provides.
 
-#### Example
+#### Example: Configuring Starting String and Fret
 
 ```javascript
 import {assignNotesAndStartingValues} from 'fretology-engine';
@@ -296,7 +316,7 @@ let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note
 
 ## Caveats
 
-Accidentals in the `notes` and `notesNotUsed` datasets are presented
+Accidentals in the `notes` and `notesNotUsed` datasets are presentedFuture Features
 as sharps.  B-flat (Bb) is listed as A-sharp (A#).  Whenever a `note`
 selection is returned by `pickNote` method, it will as a sharp.  If
 note normalization is required, `fretology-engine` exports
