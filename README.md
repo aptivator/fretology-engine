@@ -348,5 +348,5 @@ session compared to the notes that are chosen correctly and quickly.
 ## Contributing
 
 Bug fixes and new features are welcome.  When adding new functionality, use
-the latest ECMAScript constructs, pair the new code with tests that cover
-the augmentation completely, and include appropriate documentation.
+the latest ECMAScript constructs, pair the new code with tests with complete
+coverage, and include appropriate documentation.
