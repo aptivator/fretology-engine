@@ -3,9 +3,7 @@ import {generateNotesDataset} from '../src';
 
 describe('Ukulele Example Test', () => {
   it('generates notes in in string groupings for a 12-fret ukulele', () => {
-    let tuning = ['A', 'E', 'C', 'G']
-    let maxFrets = 13;
-    let configs = {progression: 'string', tuning, maxFrets};
+    let configs = {progression: 'string', tuning: ['A', 'E', 'C', 'G'], maxFrets: 13};
     let notes = generateNotesDataset(configs);
 
     expect(notes).to.eql({
