@@ -219,7 +219,7 @@ following configurations:
   * `random`, `1`, and `-1` settings would have the same effect as
     described above
 
-**Example: Purely Sequential Selection**
+##### Example: Purely Sequential Selection
 
 ```javascript
 import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
@@ -243,7 +243,7 @@ let {string, fret, note} = pickNote(configs); //string is '0', fret is '1', note
 ({string, fret, note} = pickNote(configs));   //string is '2', fret is '0', note is 'G'
 ```
 
-**Example: Sequential and Random Selection**
+##### Example: Sequential and Random Selection
 
 ```javascript
 import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
@@ -266,7 +266,7 @@ let {string, fret, note} = pickNote(configs); //string is '0', fret is '0' or '1
 ({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G#'
 ```
 
-**Example: Random Fret and String Selection**
+##### Example: Random Fret and String Selection
 
 ```javascript
 import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
