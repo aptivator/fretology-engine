@@ -340,11 +340,10 @@ a note selected by `pickNote` is compared to a note within an application
 that uses `fretology-engine` as a dependency, the application note should
 be capitalized or the selected note lowercased.
 
-Magnitude of string numbers does not indicate pitch but rather a
-position.  String `0` is the lowest string from the bottom of a fretboard
-and highest by pitch.  Whenever `startingString` configuration is set,
-`lowest`, `highest`, or `middle` setting also indicates an order and not
-a pitch.
+Magnitude of string numbers indicates position and not a pitch.  String
+`0` is the first string from the bottom of a fretboard and highest by pitch.
+Whenever `startingString` configuration is set, `lowest`, `highest`, or
+`middle` setting also indicates an order and not a pitch.
 
 The first string in the `tuning` configuration likewise indicates a position
 and not a frequency.  Standard guitar tuning is defined within the library as
