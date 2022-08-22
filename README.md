@@ -351,6 +351,9 @@ and not a frequency.  Standard guitar tuning is defined within the library as
 that is commonly listed in music materials.  Any custom tuning used should
 list its first open string as the one at the bottom of the fretboard.
 
+Talk about not holding a hand.  The library throws an error explicitly only
+once.
+
 ## Future Features
 
 Along with `notes` and `notesNotUsed`, it may be useful to include `notesUsed`

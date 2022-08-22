@@ -41,11 +41,7 @@ export function generateNotesDataset(configs = {}) {
 
   if(frets.length !== fretNumbers.length) {
     usingAllFrets = false;
-
-    frets = frets.reduce((frets, fret, index) => {
-      frets[fret] = index;
-      return frets;
-    }, {});
+    frets = frets.reduce((frets, fret) => Object.assign(frets, {[fret]: true}), {});
   }
 
   for(let string of strings) {
