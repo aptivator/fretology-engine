@@ -1,8 +1,8 @@
 import {expect}                                             from 'chai';
 import {MAX_FRETS, standardTuning}                          from '../src/_lib/configs';
 import {ascNumberSorter}                                    from '../src/_lib/utils';
-import {sharpifyNote}                                       from '../src/note-generator/_lib/note-generator-utils';
 import {assignNotesAndStartingValues, generateNotesDataset} from '../src';
+import {normalizeNote}                                      from '../src';
 import {stringNumbers, fretNumbers}                         from './fixtures/configs';
 
 describe('Generating Notes Dataset', () => {
@@ -96,25 +96,20 @@ describe('Generating Notes Dataset', () => {
       expect(configs.notes[5][2]).to.equal('F#');
     });
 
-    it('configures a dataset using custom tuning (flats are converted to sharps)', () => {
-      configs.tuning = ['Bb', 'A', 'D', 'A', 'D', 'A#'];
+    it('configures a dataset using custom tuning (notes are normalized to sharps [if appropriate])', () => {
+      configs.tuning = ['cb', 'e#', 'db', 'a', 'D', 'A#'];
       assignNotesAndStartingValues(configs);
-      configs.tuning.forEach((note, index) => {
-        note = sharpifyNote(note);
-        expect(configs.notes[index][0]).to.equal(note);
-        expect(configs.notes[index][12]).to.equal(note);
-      });
-    });
 
-    it('capitalizes notes in a provided tuning', () => {
-      configs.tuning = ['e', 'gb', 'd', 'e', 'e', 'f'];
-      assignNotesAndStartingValues(configs);
-      configs.tuning.forEach((note, index) => {
-        note = note.toUpperCase();
-        note = sharpifyNote(note);
-        expect(configs.notes[index][0]).to.equal(note);
-        expect(configs.notes[index][12]).to.equal(note);
-      });
+      expect(configs.notes[0][0]).to.equal('B');
+      expect(configs.notes[0][12]).to.equal('B');
+      expect(configs.notes[1][0]).to.equal('F');
+      expect(configs.notes[1][12]).to.equal('F');
+      expect(configs.notes[2][0]).to.equal('C#');
+      expect(configs.notes[2][12]).to.equal('C#');
+      
+      expect(normalizeNote(configs.tuning[3])).to.equal('A');
+      expect(configs.notes[3][0]).to.equal('A');
+      expect(configs.notes[3][12]).to.equal('A');
     });
 
     it('throws an error when a number of requested strings exceeds exceeds strings in a tuning', () => {

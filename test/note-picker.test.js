@@ -98,12 +98,12 @@ describe('Note Picker', () => {
 
     describe('Sequential Progression', () => {
       let conditions = [
-        {primary: 'string', secondary: 'fret', startingPoint: 'lowest', individualProgression: 1}, 
+        {primary: 'string', secondary: 'fret', startingPoint: 'lowest', individualProgression: '1'}, 
         {primary: 'fret', secondary: 'string', startingPoint: 'highest', individualProgression: -1}
       ];
 
       conditions.forEach(({primary, secondary, startingPoint, individualProgression}) => {
-        let asc = individualProgression === 1;
+        let asc = +individualProgression === 1;
         let order = asc ? 'ascending': 'descending';
 
         it(`selects ${primary} and ${secondary} sequentially in ${order} order from a ${startingPoint} starting point`, () => {

@@ -77,7 +77,7 @@ function pickByProgression(progression = 'random', currentValue, randomDataset, 
     var values = Object.keys(nonRandomDataset).sort(ascNumberSorter);
     let {length} = values;
     let index = values.findIndex((value) => value === currentValue);
-    index = (length + index + progression) % length;
+    index = (length + index + +progression) % length;
     return values[index];
   }
   

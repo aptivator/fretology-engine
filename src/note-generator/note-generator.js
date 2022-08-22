@@ -1,6 +1,6 @@
-import {MAX_FRETS, standardTuning}                     from '../_lib/configs';
-import {ascNumberSorter, error, setObjectValue}        from '../_lib/utils';
-import {getNextNote, getSequentialArray, sharpifyNote} from './_lib/note-generator-utils';
+import {MAX_FRETS, standardTuning}                      from '../_lib/configs';
+import {ascNumberSorter, error, setObjectValue}         from '../_lib/utils';
+import {getNextNote, getSequentialArray, normalizeNote} from './_lib/note-generator-utils';
 
 export function generateNotesDataset(configs = {}) {
   let {tuning, progression} = configs;
@@ -50,7 +50,7 @@ export function generateNotesDataset(configs = {}) {
 
   for(let string of strings) {
     let note = tuning[string];
-    note = sharpifyNote(note);
+    note = normalizeNote(note, false);
     
     for(let fret of fretNumbers) {
       if(usingAllFrets || frets.hasOwnProperty(fret)) {

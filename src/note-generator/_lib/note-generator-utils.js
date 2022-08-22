@@ -18,13 +18,26 @@ export function getSequentialArray(length) {
   return Array.from({length}, (v, i) => `${i}`);
 }
 
-export function sharpifyNote(note) {
+export function normalizeNote(note, toUpperCase = true) {
+  if(toUpperCase) {
+    note = note.toUpperCase();
+  }
+  
   if(note.length === 2) {
-    let [_note, flat] = note;
+    let [natural, accidental] = note;
+    let isFlat = accidental !== '#';
+    natural = getNextNoteLetter(natural, !isFlat);
 
-    if(flat !== '#') {
-      _note = getNextNoteLetter(_note, false);
-      note = _note + '#';
+    if(isFlat) {
+      if('BE'.includes(natural)) {
+        return natural;       
+      }
+
+      return natural + '#';
+    }
+    
+    if('CF'.includes(natural)) {
+      return natural;
     }
   }
 

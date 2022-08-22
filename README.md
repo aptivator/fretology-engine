@@ -165,23 +165,188 @@ console.log(configs.string); //should be '5'  (the low-E string)
 console.log(configs.fret);   //should be '12' (midpoint of 25 [include open strings] frets)
 ```
 
-### Note Picking
+### Note Selection
 
+The library provides `pickNote` function that takes `configs` object after
+it has been augmented with the necessary data by `assignNotesAndStartingValues`
+method.  `pickNote`, with each call, returns an object with previously-not-picked
+`string` and `fret` values and their corresponding `note`.  Note picking can
+be done purely randomly, purely sequentially, or both randomly and sequentially
+when selecting a string and fret.
 
+#### Purely Random Selection
 
-#### Random Selection
+`progression` set to `random` directs `pickNote` to select a string and a fret
+randomly from the `notesNotUsed`.  `startingString`, `startingFret`, and other
+selection-related settings are ignored.
 
-#### Sequential Selection
+```javascript
+import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
+
+let configs = assignNotesAndStartingValues();
+let {string, fret, note} = pickNote(configs);
+//string should be between '0' and '5'
+//fret should be between '0' and '24'
+//note should be a value appropriate for the selected string and fret
+```
+
+#### Not Purely Random Selection
+
+`progression` set to `string` or `fret` allows selected fretboard
+notes traversed a string or fret at a time.  Note picking within a string
+or fret continues until all notes within are used up.  Selection then
+moves to a next string or fret.
+
+Progression from string to string and/or fret to fret is directed by the
+following configurations:
+
+* **`stringProgression`**
+  * directs how a next string is picked
+  * possible values: `random`, `1`, or `-1`
+  * default: `random`
+  * `random` instructs to select randomly out of the available strings
+  * `1` specifies to take a currently selected string and ascendingly
+    go to the next one; e.g., if the first-selected string is `5` (for
+    a six-string instrument), then the next would be `0`, and the next 
+    would be `1`
+  * `-1` denotes descending selection; e.g., if the first-selected
+    string is `0` (for a six-string instrument), then the next would
+    be `5`, and the next would be `4`
+* **`fretProgression`**
+  * specifies how a next fret is selected
+  * possible values: `random`, `1`, or `-1`
+  * default: `random`
+  * `random`, `1`, and `-1` settings would have the same effect as
+    describe above
+
+**Example: Purely Sequential Selection**
+
+```javascript
+import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
+
+let configs = {
+  progression: 'string',
+  frets: [0, 1],
+  startingString: 'lowest', 
+  startingFret: 'highest',
+  stringProgression: 1,
+  fretProgression: -1
+};
+
+assignNotesAndStartingValues(configs);
+
+let {string, fret, note} = pickNote(configs); //string is '0', fret is '1', note is 'F' 
+({string, fret, note} = pickNote(configs));   //string is '0', fret is '0', note is 'E'
+({string, fret, note} = pickNote(configs));   //string is '1', fret is '1', note is 'C'
+({string, fret, note} = pickNote(configs));   //string is '1', fret is '0', note is 'B'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '1', note is 'G#'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '0', note is 'G'
+```
+
+**Example: Sequential and Random Selection**
+
+```javascript
+import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
+
+let configs = {
+  progression: 'string',
+  frets: [0, 1],
+  startingString: 'lowest', 
+  stringProgression: 1,
+  fretProgression: 'random'
+};
+
+assignNotesAndStartingValues(configs);
+
+let {string, fret, note} = pickNote(configs); //string is '0', fret is '0' or '1', note is 'E' or 'F'
+({string, fret, note} = pickNote(configs));   //string is '0', fret is '0' or '1', note is 'E' or 'F'
+({string, fret, note} = pickNote(configs));   //string is '1', fret is '1' or '0', note is 'C' or 'B'
+({string, fret, note} = pickNote(configs));   //string is '1', fret is '1' or '0', note is 'C' or 'B'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G#'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G#'
+```
+
+**Example: Random Fret and String Selection**
+
+```javascript
+import {assignNotesAndStartingValues, pickNote} from 'fretology-engine';
+
+let configs = {
+  progression: 'fret',
+  frets: [0, 1, 2],
+  strings: [0, 1, 2],
+  startingString: 'lowest', 
+  startingFret, 'lowest',
+  stringProgression: 'random',
+  fretProgression: 'random'
+};
+
+assignNotesAndStartingValues(configs);
+
+let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note is 'E'
+({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
+({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
+
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
+
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
+```
 
 ## Caveats
 
-Highest-pitched string is the first string
-The app comes with a maximum of 24 frets
-The first value in tuning array is the highest pitched string
-maxFrets should include open strings (0th fret)
+Accidentals in the `notes` and `notesNotUsed` datasets are presented
+as sharps.  B-flat (Bb) is listed as A-sharp (A#).  Whenever a `note`
+selection is returned by `pickNote` method, it will as a sharp.  If
+note normalization is required, `fretology-engine` exports
+`normalizeNote` method.  It will convert a flat into a sharp.  A C-
+or F-flat will be converted to a B or E, respectively.  A B-sharp or
+E-sharp will be normalized to a respectively C or F.  By default,
+`normalizeNote` will capitalize a note.  An accidental note that does
+not include a pound sign (`#`) as the second character will be treated
+as a flat.
+
+```javascript
+import {normalizeNote} from 'fretology-engine';
+
+console.log(normalizeNote('db'));       //should print C#
+console.log(normalizeNote('B#'))        //should print C
+console.log(normalizeNote('fb'))        //should print E
+```
+
+All of the notes that the library generates are uppercased.  Whenever
+a note selected by `pickNote` is compared to a note within an application
+that uses `fretology-engine` as a dependency, the application note should
+be capitalized or the selected note lowercased.
+
+Magnitude of string numbers does not indicate pitch but rather a
+position.  String `0` is the lowest string from the bottom of a fretboard
+and highest by pitch.  Whenever `startingString` configuration is set,
+`lowest`, `highest`, or `middle` setting also indicates an order and not
+a pitch.
+
+The first string in the `tuning` configuration likewise indicates a position
+and not a frequency.  Standard guitar tuning is defined within the library as
+`['E', 'B', 'G', 'D', 'A', 'E']` and not as `['E', 'A', 'D', 'G', 'B', 'E']`
+that is commonly listed in music materials.  Any custom tuning used should
+list its first open string as the one at the bottom of the fretboard.
 
 ## Future Features
 
-Learning mode
+Along with `notes` and `notesNotUsed`, it may be useful to include `notesUsed`
+dataset.  Perhaps some visual applications may use the latter to highlight
+the notes that have already been picked.
+
+One of the next versions of the `fretology-engine` will include a learning
+mode.  Notes that are picked incorrectly or selected correctly, but with
+above-average deliberation time, should be shown more often during a training
+session compared to the notes that are chosen correctly and quickly.
 
 ## Contributing
+
+Bug fixes and new features are welcome.  When adding new functionality, use
+the latest ECMAScript constructs, pair the new code with tests that cover
+the augmentation completely, and include appropriate documentation.
