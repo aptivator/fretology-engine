@@ -40,8 +40,8 @@ How a note dataset is built is affected by the following configuration propertie
   * determines grouping of notes in a dataset
   * possible values: `random`, `string`, or `fret`
   * default: `random`
-  * NOTE: `random` and `string` instruct to group notes by strings
-  * NOTE: `fret` setting directs grouping of notes by frets
+  * `random` or `string` instructs to group notes by strings
+  * `fret` setting directs grouping of notes by frets
 * **`natural`**
   * indicates whether to include natural notes
   * possible values: `true` or `false`
@@ -64,16 +64,16 @@ How a note dataset is built is affected by the following configuration propertie
 * **`maxFrets`**
   * sets a maximum number of frets to use
   * default: `25`
-  * NOTE: the number must include fret `0` (open strings).  For a 21-fret arrangement,
+  * The number must include fret `0` (open strings).  For a 21-fret arrangement,
     `maxFrets` should be `22`
-  * NOTE: `maxFrets` is ignored when `frets` setting is provided
+  * `maxFrets` is ignored when `frets` setting is provided
 * **`tuning`**
   * defines base notes from which a dataset is built
   * default: `['E', 'B', 'G', 'D', 'A', 'E']` (highest pitched string is 
     first)  
-  * NOTE: the first value in a `tuning` array should correspond to a highest-pitched
+  * The first value in a `tuning` array should correspond to a highest-pitched
     string
-  * NOTE: if a number of `strings` setting exceeds a number of strings in a `tuning`,
+  * If a number of `strings` setting exceeds a number of strings in a `tuning`,
     the library will error out
     
 #### Example: Generating Default Dataset
@@ -166,6 +166,8 @@ console.log(configs.fret);   //should be '12' (midpoint of 25 [include open stri
 ```
 
 ### Note Picking
+
+
 
 #### Random Selection
 
