@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This library was written as a primary dependency for freboard-learning applications.
+This library was written as a primary dependency for fretboard-learning applications.
 `fretology-engine` fulfills two objectives: (1) generation of custom arrangement of 
 fretboard notes and (2) note selection from the built dataset.  Datasets can consist
 of natural, accidental, or both types of notes and be limited to specific strings and 
@@ -12,7 +12,7 @@ by frets.  Note picking from a dataset can be purely random or progress on a
 string-by-string or fret-by-fret basis.  For the latter modes, a string or a fret is 
 picked and notes within are selected exhaustively, before selection moves to the next 
 string or fret.  When using the string or fret progression, strings or frets can be 
-chosen randomly or sequentially (acendingly or descendingly).  Notes within a string
+chosen randomly or sequentially (ascendingly or descendingly).  Notes within a string
 or a fret can also be chosen randomly or sequentially.  Starting strings or frets
 can be random, highest, lowest or middle.
 
@@ -87,7 +87,7 @@ let configs = assignNotesAndStartingValues();
  * datasets with natural and accidental notes
  * based on the standard guitar tuning for 24 
  * frets and grouped by strings from highest- 
- * to lowested-pitched
+ * to lowest-pitched
  */
 ```
 
