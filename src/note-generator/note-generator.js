@@ -1,5 +1,5 @@
 import {MAX_FRETS, standardTuning}                      from '../_lib/configs';
-import {ascNumberSorter, error, setObjectValue}         from '../_lib/utils';
+import {ascNumberSorter, setObjectValue}                from '../_lib/utils';
 import {getNextNote, getSequentialArray, normalizeNote} from './_lib/note-generator-utils';
 
 export function generateNotesDataset(configs = {}) {
