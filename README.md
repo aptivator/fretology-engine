@@ -352,10 +352,10 @@ that is commonly listed in music materials.  Any custom tuning used should
 list its first open string as the one at the bottom of the fretboard.
 
 At this time `fretology-engine` does **not** perform any type of error checking.
-Providing incorrect `tuning` (e.g., `['H', 'A', 'G', 'C']`) will generate an
-erroneous dataset, but will not throw any errors.  Specifying non-lettered
-tuning (e.g., `[66, 'A', 'D']`) will trigger an error, because applicable string
-functions are not available on numeric types.
+For instance, providing incorrect `tuning` (e.g., `['H', 'A', 'G', 'C']`) will
+generate an erroneous dataset, but will not throw any errors.  Specifying
+non-lettered tuning (e.g., `[66, 'A', 'D']`) will trigger an error, because
+applicable string functions are not available on numeric types.
 
 ## Future Features
 
