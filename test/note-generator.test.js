@@ -111,11 +111,6 @@ describe('Generating Notes Dataset', () => {
       expect(configs.notes[3][0]).to.equal('A');
       expect(configs.notes[3][12]).to.equal('A');
     });
-
-    it('throws an error when a number of requested strings exceeds exceeds strings in a tuning', () => {
-      configs.strings = [0, 1, 2, 3, 4, 5, 6, 7];
-      expect(() => assignNotesAndStartingValues(configs)).to.throw(/exceeds number of strings in a tuning/);
-    });
   });
 
   describe('Using generateNotesDataset()', () => {

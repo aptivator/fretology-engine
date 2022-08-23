@@ -316,7 +316,7 @@ let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note
 
 ## Caveats
 
-Accidentals in the `notes` and `notesNotUsed` datasets are presentedFuture Features
+Accidentals in the `notes` and `notesNotUsed` datasets are presented
 as sharps.  B-flat (Bb) is listed as A-sharp (A#).  Whenever a `note`
 selection is returned by `pickNote` method, it will as a sharp.  If
 note normalization is required, `fretology-engine` exports
@@ -351,8 +351,11 @@ and not a frequency.  Standard guitar tuning is defined within the library as
 that is commonly listed in music materials.  Any custom tuning used should
 list its first open string as the one at the bottom of the fretboard.
 
-Talk about not holding a hand.  The library throws an error explicitly only
-once.
+At this time `fretology-engine` does **not** perform any type of error checking.
+Providing incorrect `tuning` (e.g., `['H', 'A', 'G', 'C']`) will generate an
+erroneous dataset, but will not throw any errors.  Specifying non-lettered
+tuning (e.g., `[66, 'A', 'D']`) will trigger an error, because applicable string
+functions are not available on numeric types.
 
 ## Future Features
 
@@ -364,6 +367,8 @@ One of the next versions of the `fretology-engine` will include a learning
 mode.  Notes that are picked incorrectly or selected correctly, but with
 above-average deliberation time, should be shown more often during a training
 session compared to the notes that are chosen correctly and quickly.
+
+Error checking code may need to be included in a next version.
 
 ## Contributing
 

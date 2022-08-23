@@ -1,4 +1,4 @@
-import {libraryName} from './configs';
+//import {libraryName} from './configs';
 
 export function ascNumberSorter(n1, n2) {
   return n1 - n2;
@@ -7,10 +7,11 @@ export function ascNumberSorter(n1, n2) {
 export function cloneDeep(o) {
   return JSON.parse(JSON.stringify(o));
 }
-
+/*
 export function error(errorMessage) {
   throw new Error(`${libraryName}: ${errorMessage}`);
 }
+*/
 
 export function isEmpty(o) {
   return !Object.keys(o).length;

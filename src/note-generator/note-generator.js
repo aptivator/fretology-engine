@@ -24,10 +24,6 @@ export function generateNotesDataset(configs = {}) {
     strings = Object.keys(tuning);
   }
 
-  if(strings.length > tuning.length) {
-    error('number of specified strings exceeds number of strings in a tuning');
-  }
-
   if(frets) {
     frets.sort(ascNumberSorter);
     maxFrets = +frets[frets.length - 1] + 1;
