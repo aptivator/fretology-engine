@@ -16,6 +16,7 @@
       * [Example: Purely Sequential Selection](#example-purely-sequential-selection)
       * [Example: Sequential and Random Selection](#example-sequential-and-random-selection)
       * [Example: Random Fret and String Selection](#example-random-fret-and-string-selection)
+* [Additional Examples](#additional-examples)
 * [Caveats](#caveats)
 * [Future Features](#future-features)
 * [Contributing](#contributing)
@@ -319,6 +320,13 @@ let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
 ({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
 ```
+
+## Additional Examples
+
+The library comes with [tests](./test) that cover all of the code.  The
+tests are broken by note generation, note picking, and initialization of
+starting values.  Perusal of these assessments provides a complete overview
+of `fretology-engine`'s use cases.
 
 ## Caveats
 
