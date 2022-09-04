@@ -374,7 +374,7 @@ above-average deliberation time, should be shown more often during a training
 session compared to the notes that are chosen correctly and quickly.
 
 It may be beneficial to let a developer specify what flat and sharp characters
-to use in the dataset.  The library exports default `flatSymbol` and `sharpSymbol`
+to use in the dataset.  The library exports `flatSymbol` and `sharpSymbol`
 variables that hold flat and sharp unicode characters.
 
 Error checking code may need to be included in a next version.
