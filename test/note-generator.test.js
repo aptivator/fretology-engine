@@ -1,8 +1,7 @@
 import {expect}                                             from 'chai';
-import {MAX_FRETS, standardTuning}                          from '../src/_lib/configs';
+import {flatSymbol, MAX_FRETS, sharpSymbol, standardTuning} from '../src/_lib/configs';
 import {ascNumberSorter}                                    from '../src/_lib/utils';
 import {assignNotesAndStartingValues, generateNotesDataset} from '../src';
-import {normalizeNote}                                      from '../src';
 import {stringNumbers, fretNumbers}                         from './fixtures/configs';
 
 describe('Generating Notes Dataset', () => {
@@ -15,6 +14,12 @@ describe('Generating Notes Dataset', () => {
       assignNotesAndStartingValues(configs);
       expect(configs.notes).to.be.an('object');
       expect(configs.notes).to.eql(configs.notesNotUsed);
+    });
+
+    it('produces an array version of notes dataset', () => {
+      assignNotesAndStartingValues(configs);
+      expect(configs.notesArray.length).to.equal(6);
+      expect(configs.notesArray[0].length).to.equal(25);
     });
     
     it('can create and return a configs object', () => {
@@ -43,13 +48,13 @@ describe('Generating Notes Dataset', () => {
       assignNotesAndStartingValues(configs);
       expect(Object.keys(configs.notes)).to.deep.equalInAnyOrder(fretNumbers);
     });
-
+    
     it('limits generated note dataset to select strings', () => {
       configs.strings = ['0', '4'];
       assignNotesAndStartingValues(configs);
       expect(Object.keys(configs.notes)).to.eql(configs.strings);
     });
-
+    
     it('constrains built note dataset to a specified highest fret', () => {
       let maxFrets = 22;
       Object.assign(configs, {maxFrets, progression: 'fret'});
@@ -73,12 +78,35 @@ describe('Generating Notes Dataset', () => {
       });
     });
 
-    it('selects only accidental notes for a generated note dataset', () => {
+    it('selects only sharp accidental notes (default) for a generated note dataset', () => {
+      let rx = new RegExp(`^[A-G]${sharpSymbol}$`);
       configs.natural = false;
       assignNotesAndStartingValues(configs);
       Object.values(configs.notes).forEach((stringNotes) => {
         Object.values(stringNotes).forEach((note) => {
-          expect(/^[A-G]\#$/.test(note)).to.be.true;
+          expect(rx.test(note)).to.be.true;
+        });
+      });
+    });
+
+    it('picks only flat accidental notes for a note dataset', () => {
+      let rx = new RegExp(`^[A-G]${flatSymbol}$`);
+      Object.assign(configs, {natural: false, accidentalFormat: 'flat'});
+      assignNotesAndStartingValues(configs);
+      Object.values(configs.notes).forEach((stringNotes) => {
+        Object.values(stringNotes).forEach((note) => {
+          expect(rx.test(note)).to.be.true;
+        });
+      });      
+    });
+
+    it('generates accidental notes in sharp and flat format', () => {
+      let rx = new RegExp(`^[A-G]${flatSymbol}|${sharpSymbol}$`);
+      Object.assign(configs, {natural: false, accidentalFormat: 'flatAndSharp'});
+      assignNotesAndStartingValues(configs);
+      Object.values(configs.notes).forEach((stringNotes) => {
+        Object.values(stringNotes).forEach((note) => {
+          note.forEach((note) => expect(rx.test(note)).to.be.true);
         });
       });
     });
@@ -93,10 +121,24 @@ describe('Generating Notes Dataset', () => {
     it('arranges notes accurately', () => {
       assignNotesAndStartingValues(configs);
       expect(configs.notes[0][12]).to.equal('E');
-      expect(configs.notes[5][2]).to.equal('F#');
+      expect(configs.notes[5][2]).to.equal(`F${sharpSymbol}`);
     });
 
-    it('configures a dataset using custom tuning (notes are normalized to sharps [if appropriate])', () => {
+    it('produces notes accurately for flat formatting', () => { 
+      configs.accidentalFormat = 'flat';
+      assignNotesAndStartingValues(configs);
+      expect(configs.notes[0][12]).to.equal('E');
+      expect(configs.notes[5][2]).to.equal(`G${flatSymbol}`);      
+    });
+
+    it('generates notes accurately for flatAndSharp formatting', () => {
+      configs.accidentalFormat = 'flatAndSharp';
+      assignNotesAndStartingValues(configs);
+      expect(configs.notes[0][12]).to.equal('E');
+      expect(configs.notes[5][2]).to.eql([`F${sharpSymbol}`, `G${flatSymbol}`]);   
+    });
+
+    it('configures a dataset using a custom tuning', () => {
       configs.tuning = ['cb', 'e#', 'db', 'a', 'D', 'A#'];
       assignNotesAndStartingValues(configs);
 
@@ -104,26 +146,34 @@ describe('Generating Notes Dataset', () => {
       expect(configs.notes[0][12]).to.equal('B');
       expect(configs.notes[1][0]).to.equal('F');
       expect(configs.notes[1][12]).to.equal('F');
-      expect(configs.notes[2][0]).to.equal('C#');
-      expect(configs.notes[2][12]).to.equal('C#');
-      
-      expect(normalizeNote(configs.tuning[3])).to.equal('A');
+      expect(configs.notes[2][0]).to.equal(`C${sharpSymbol}`);
+      expect(configs.notes[2][12]).to.equal(`C${sharpSymbol}`);
       expect(configs.notes[3][0]).to.equal('A');
       expect(configs.notes[3][12]).to.equal('A');
+    });
+
+    it(`formats custom tuning notes by "presuming" that anything other than #, ${sharpSymbol}, or ${flatSymbol} is a flat`, () => {
+      let dFlat = `C${sharpSymbol}`;
+      let dFlatArray = [dFlat, `D${flatSymbol}`]
+      let tuning = ['cb', 'e#', 'df', 'a', 'D', `A${sharpSymbol}`];
+      Object.assign(configs, {accidentalFormat: 'flatAndSharp', tuning});
+      assignNotesAndStartingValues(configs);
+      expect(configs.notes[2][0]).to.equal(dFlat);
+      expect(configs.notes[2][12]).to.eql(dFlatArray);      
     });
   });
 
   describe('Using generateNotesDataset()', () => {
     it('is used just to generate notes', () => {
       let configs = {strings: ['1'], frets: ['0']};
-      let notes = generateNotesDataset(configs);
+      let {notes} = generateNotesDataset(configs);
       expect(notes).to.eql({1: {0: 'B'}});
     });
 
     it('uses default settings when no configs are provided', () => {
-      let notes = generateNotesDataset();
+      let {notes} = generateNotesDataset();
       expect(Object.keys(notes).length).to.equal(standardTuning.length);
       expect(Object.keys(notes[0]).length).to.equal(MAX_FRETS);
     });
-  });  
+  });
 });

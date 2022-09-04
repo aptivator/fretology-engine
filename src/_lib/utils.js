@@ -46,10 +46,11 @@ export function pickValue(values, pickType) {
 }
 
 export function setObjectValue(o, path, value) {
-  let last = path.pop();
+  let last = path.at(-1);
+  path = path.slice(0, -1);
 
   for(let part of path) {
-    o = o[part] ??= {};
+    o = o[part] ??= Array.isArray(o) ? [] : {};
   }
   
   o[last] = value;

@@ -1,23 +1,18 @@
-import {MAX_FRETS, standardTuning}                      from '../_lib/configs';
-import {ascNumberSorter, setObjectValue}                from '../_lib/utils';
-import {getNextNote, getSequentialArray, normalizeNote} from './_lib/note-generator-utils';
+import {MAX_FRETS, standardTuning}                                  from '../_lib/configs';
+import {ascNumberSorter, setObjectValue}                            from '../_lib/utils';
+import {getNextNote, getSequentialArray, formatNote, normalizeNote} from './_lib/note-generator-utils';
 
 export function generateNotesDataset(configs = {}) {
-  let {tuning, progression} = configs;
+  let {tuning = standardTuning, progression} = configs;
   let {strings, frets, maxFrets = MAX_FRETS} = configs;
   let {natural = true, accidental = true} = configs;
   let pather = progression === 'fret' ? (p1, p2) => [p2, p1] : (...args) => args;
   let usingAllFrets = true;
   let notes = {};
+  let notesArray = [];
 
   if(!progression) {
     configs.progression = 'random';
-  }
-
-  if(!tuning) {
-    tuning = standardTuning;
-  } else {
-    tuning = tuning.map((note) => note.toUpperCase());
   }
 
   if(!strings) {
@@ -42,8 +37,12 @@ export function generateNotesDataset(configs = {}) {
 
   for(let string of strings) {
     let note = tuning[string];
-    note = normalizeNote(note, false);
-    
+
+    if(tuning !== standardTuning) {
+      note = formatNote(note);
+      note = normalizeNote(note, {accidentalFormat: 'sharp'});
+    }
+
     for(let fret of fretNumbers) {
       if(usingAllFrets || frets.hasOwnProperty(fret)) {
         let isNatural = note.length === 1;
@@ -51,12 +50,13 @@ export function generateNotesDataset(configs = {}) {
         if((natural && isNatural) || (accidental && !isNatural)) {
           let path = pather(string, fret);
           setObjectValue(notes, path, note);
+          setObjectValue(notesArray, path, note);
         }
       }
 
-      note = getNextNote(note);
+      note = getNextNote(note, configs);
     }
   }
 
-  return notes;
+  return {notes, notesArray};
 }

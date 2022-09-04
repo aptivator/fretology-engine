@@ -1,6 +1,7 @@
 import {expect}                                 from 'chai';
 import sinon                                    from 'sinon';
 import {assignNotesAndStartingValues, pickNote} from '../src';
+import {sharpSymbol}                            from '../src/_lib/configs';
 import {stringNumbers, fretNumbers}             from './fixtures/configs';
 
 describe('Note Picker', () => {
@@ -15,9 +16,10 @@ describe('Note Picker', () => {
 
     it('returns string, fret, and note object', () => {
       let {string, fret, note} = pickNote(configs);
+      let noteRx = new RegExp(`^[A-G]${sharpSymbol}?$`);
       expect(string).to.equal(stringToUse);
       expect(fretNumbers.includes(fret)).to.be.true;
-      expect(/^[A-G]#?$/.test(note)).to.be.true;
+      expect(noteRx.test(note)).to.be.true;
     });
 
     it('selects a note from notesNotUsed and then deletes it from the dataset', () => {
