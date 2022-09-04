@@ -70,6 +70,12 @@ How a note dataset is built is affected by the following configuration propertie
   * specifies whether to include flat/sharp notes
   * possible values: `true` or `false`
   * default: `true`
+* **`accidentalFormat`**
+  * designates format of accidental notes
+  * possible values: `flat`, `sharp`, or `flatAndSharp`
+  * whenever `flatAndSharp` is chosen, an accidental note will be an array pair
+    of both flat and sharp versions (e.g., `['C♯', 'D♭']`)
+  * default: `sharp`
 * **`strings`**
   * contains string numbers to include in a dataset
   * possible values: any string numbers from the highest (i.e., `0`) to the lowest
@@ -130,7 +136,7 @@ let notes = generateNotesDataset(configs);
   printing notes['2'] (for the C-string) should provide the following output:
 
   {
-    0: 'C', 1: 'C#', 2: 'D', 3: 'D#', 4: 'E', 5: 'F', 6: 'F#', 7: 'G', 8: 'G#', 9: 'A', 10: 'A#', 11: 'B', 12: 'C'
+    0: 'C', 1: 'C♯', 2: 'D', 3: 'D♯', 4: 'E', 5: 'F', 6: 'F♯', 7: 'G', 8: 'G♯', 9: 'A', 10: 'A♯', 11: 'B', 12: 'C'
   }
 */
 ```
@@ -259,7 +265,7 @@ let {string, fret, note} = pickNote(configs); //string is '0', fret is '1', note
 ({string, fret, note} = pickNote(configs));   //string is '0', fret is '0', note is 'E'
 ({string, fret, note} = pickNote(configs));   //string is '1', fret is '1', note is 'C'
 ({string, fret, note} = pickNote(configs));   //string is '1', fret is '0', note is 'B'
-({string, fret, note} = pickNote(configs));   //string is '2', fret is '1', note is 'G#'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '1', note is 'G♯'
 ({string, fret, note} = pickNote(configs));   //string is '2', fret is '0', note is 'G'
 ```
 
@@ -282,8 +288,8 @@ let {string, fret, note} = pickNote(configs); //string is '0', fret is '0' or '1
 ({string, fret, note} = pickNote(configs));   //string is '0', fret is '0' or '1', note is 'E' or 'F'
 ({string, fret, note} = pickNote(configs));   //string is '1', fret is '1' or '0', note is 'C' or 'B'
 ({string, fret, note} = pickNote(configs));   //string is '1', fret is '1' or '0', note is 'C' or 'B'
-({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G#'
-({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G#'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G♯'
+({string, fret, note} = pickNote(configs));   //string is '2', fret is '0' or '1', note is 'G' or 'G♯'
 ```
 
 ##### Example: Random Fret and String Selection
@@ -306,33 +312,32 @@ assignNotesAndStartingValues(configs);
 let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note is 'E'
 ({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
 ({string, fret, note} = pickNote(configs));   //fret is '0', string is '1' or '2', note is 'B' or 'G'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F#'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
-({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G#', 'C#', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F♯'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '0', note is 'F' or 'F♯'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
+({string, fret, note} = pickNote(configs));   //fret is '1' or '2', string is '1' or '2', note is 'C', 'G♯', 'C♯', or 'A'
 ```
 
 ## Caveats
 
-Accidentals in the `notes` and `notesNotUsed` datasets are presented
-as sharps.  B-flat (Bb) is listed as A-sharp (A#).  Whenever a `note`
-selection is returned by `pickNote` method, it will as a sharp.  If
-note normalization is required, `fretology-engine` exports
-`normalizeNote` method.  It will convert a flat into a sharp.  A C-
-or F-flat will be converted to a B or E, respectively.  A B-sharp or
-E-sharp will be normalized to a respective C or F.  By default,
-`normalizeNote` will capitalize a note.  An accidental note that does
-not include a pound sign (`#`) as the second character will be treated
-as a flat.
+Accidentals in the `notes`, `notesNotUsed`, and `notesArray` datasets
+are presented with unicode's flat (`♭`) and sharp (`♯`) symbols.  Whenever
+a note normalization is required, `fretology-engine` exports `formatNote`
+method.  It will convert flats or sharps that are natural into their
+respective natural notes.  A C- or F-flat will be converted to a B or E,
+respectively.  A B-sharp or E-sharp will be normalized to a respective 
+C or F.  By default, `formatNote` will capitalize a note.  An accidental
+note that does not include a pound sign (`#`) or a sharp sign (`♯`) as
+the second character will be treated as a flat.
 
 ```javascript
-import {normalizeNote} from 'fretology-engine';
+import {formatNote} from 'fretology-engine';
 
-console.log(normalizeNote('db'));       //should print C#
-console.log(normalizeNote('B#'))        //should print C
-console.log(normalizeNote('fb'))        //should print E
+console.log(formatNote('db')); //should print C♯
+console.log(formatNote('B#')); //should print C
+console.log(formatNote('ff')); //should print E
 ```
 
 All of the notes that the library generates are uppercased.  Whenever
@@ -355,7 +360,7 @@ At this time `fretology-engine` does **not** perform any type of error checking.
 For instance, providing incorrect `tuning` (e.g., `['H', 'A', 'G', 'C']`) will
 generate an erroneous dataset, but will not throw any errors.  Specifying
 non-lettered tuning (e.g., `[66, 'A', 'D']`) will trigger an error, because
-applicable string functions are not available on numeric types.
+applicable functions are not available on numeric types.
 
 ## Future Features
 
@@ -367,6 +372,10 @@ One of the next versions of the `fretology-engine` will include a learning
 mode.  Notes that are picked incorrectly or selected correctly, but with
 above-average deliberation time, should be shown more often during a training
 session compared to the notes that are chosen correctly and quickly.
+
+It may be beneficial to let a developer specify what flat and sharp characters
+to use in the dataset.  The library exports default `flatSymbol` and `sharpSymbol`
+variables that hold flat and sharp unicode characters.
 
 Error checking code may need to be included in a next version.
 

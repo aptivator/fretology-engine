@@ -1,8 +1,7 @@
-import {expect}                                 from 'chai';
-import sinon                                    from 'sinon';
-import {assignNotesAndStartingValues, pickNote} from '../src';
-import {sharpSymbol}                            from '../src/_lib/configs';
-import {stringNumbers, fretNumbers}             from './fixtures/configs';
+import {expect}                                              from 'chai';
+import sinon                                                 from 'sinon';
+import {assignNotesAndStartingValues, pickNote, sharpSymbol} from '../src';
+import {stringNumbers, fretNumbers}                          from './fixtures/configs';
 
 describe('Note Picker', () => {
   describe('Default Behaviors', () => {

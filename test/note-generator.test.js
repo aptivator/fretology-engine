@@ -1,6 +1,7 @@
 import {expect}                                             from 'chai';
-import {flatSymbol, MAX_FRETS, sharpSymbol, standardTuning} from '../src/_lib/configs';
+import {MAX_FRETS, standardTuning}                          from '../src/_lib/configs';
 import {ascNumberSorter}                                    from '../src/_lib/utils';
+import {flatSymbol, sharpSymbol}                            from '../src';
 import {assignNotesAndStartingValues, generateNotesDataset} from '../src';
 import {stringNumbers, fretNumbers}                         from './fixtures/configs';
 
@@ -153,12 +154,11 @@ describe('Generating Notes Dataset', () => {
     });
 
     it(`formats custom tuning notes by "presuming" that anything other than #, ${sharpSymbol}, or ${flatSymbol} is a flat`, () => {
-      let dFlat = `C${sharpSymbol}`;
-      let dFlatArray = [dFlat, `D${flatSymbol}`]
+      let dFlatArray = [`C${sharpSymbol}`, `D${flatSymbol}`]
       let tuning = ['cb', 'e#', 'df', 'a', 'D', `A${sharpSymbol}`];
       Object.assign(configs, {accidentalFormat: 'flatAndSharp', tuning});
       assignNotesAndStartingValues(configs);
-      expect(configs.notes[2][0]).to.equal(dFlat);
+      expect(configs.notes[2][0]).to.eql(dFlatArray);
       expect(configs.notes[2][12]).to.eql(dFlatArray);      
     });
   });

@@ -40,7 +40,7 @@ export function generateNotesDataset(configs = {}) {
 
     if(tuning !== standardTuning) {
       note = formatNote(note);
-      note = normalizeNote(note, {accidentalFormat: 'sharp'});
+      note = normalizeNote(note, configs);
     }
 
     for(let fret of fretNumbers) {

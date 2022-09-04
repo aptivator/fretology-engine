@@ -1,6 +1,5 @@
-import {expect}               from 'chai';
-import {formatNote}           from '../src/note-generator/_lib/note-generator-utils';
-import {generateNotesDataset} from '../src';
+import {expect}                           from 'chai';
+import {formatNote, generateNotesDataset} from '../src';
 
 describe('Ukulele Example Test', () => {
   it('generates notes in in string groupings for a 12-fret ukulele', () => {

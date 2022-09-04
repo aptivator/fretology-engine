@@ -66,6 +66,10 @@ export function normalizeNote(note, options) {
       }
 
       note = [note, otherNote];
+
+      if(!isSharp) {
+        note.reverse();
+      }
     }
   }
 
