@@ -323,21 +323,26 @@ let {string, fret, note} = pickNote(configs); //fret is '0', string is '0', note
 ## Caveats
 
 Accidentals in the `notes`, `notesNotUsed`, and `notesArray` datasets
-are presented with unicode's flat (`♭`) and sharp (`♯`) symbols.  Whenever
+are presented with unicode flat (`♭`) and sharp (`♯`) symbols.  Whenever
 a note normalization is required, `fretology-engine` exports `formatNote`
 method.  It will convert flats or sharps that are natural into their
 respective natural notes.  A C- or F-flat will be converted to a B or E,
 respectively.  A B-sharp or E-sharp will be normalized to a respective 
 C or F.  By default, `formatNote` will capitalize a note.  An accidental
 note that does not include a pound sign (`#`) or a sharp sign (`♯`) as
-the second character will be treated as a flat.
+the second character will be treated as a flat.  `fretology-engine` exports
+`flatSymbol` and `sharpSymbol` variables that hold flat and sharp unicode
+characters.
 
 ```javascript
-import {formatNote} from 'fretology-engine';
+import {formatNote, flatSymbol, sharpSymbol} from 'fretology-engine';
 
 console.log(formatNote('db')); //should print C♯
 console.log(formatNote('B#')); //should print C
 console.log(formatNote('ff')); //should print E
+
+console.log(flatSymbol);  //should print ♭
+console.log(sharpSymbol); //should print ♯
 ```
 
 All of the notes that the library generates are uppercased.  Whenever
@@ -374,8 +379,7 @@ above-average deliberation time, should be shown more often during a training
 session compared to the notes that are chosen correctly and quickly.
 
 It may be beneficial to let a developer specify what flat and sharp characters
-to use in the dataset.  The library exports `flatSymbol` and `sharpSymbol`
-variables that hold flat and sharp unicode characters.
+to use in the dataset.
 
 Error checking code may need to be included in a next version.
 
